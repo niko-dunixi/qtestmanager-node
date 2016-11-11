@@ -1,0 +1,15 @@
+{
+	"name": "mobq",
+	"version": "0.0.1",
+	"main" : "MobQCtrl.js",
+	"dependencies": {
+		"axios": "^0.15.2"
+	},
+	"devDependencies": {
+		"babel-cli": "^6.16.0",
+		"babel-preset-latest": "^6.16.0",
+		"del": "^2.2.2",
+		"gulp": "^3.9.1",
+		"gulp-babel": "^6.1.2"
+	}
+}
