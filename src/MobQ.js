@@ -1,6 +1,6 @@
 import { AutoTestLogCtrl } from './AutoTestLogCtrl';
 
-export default class MobQCtrl {
+export default class MobQ {
 
 	constructor(host) {
 		this.host = host;
