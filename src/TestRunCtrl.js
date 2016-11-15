@@ -9,6 +9,16 @@ export class TestRunCtrl {
 		return this;
 	}
 
+	inSuite(suiteId) {
+		this._setSubmitUrl(suiteId, "test-suite");
+		return this;
+	}
+
+	inRelease(releaseId) {
+		this._setSubmitUrl(releaseId, "release");
+		return this;
+	}
+
 	forTest(testId) {
 		this.testId = testId;
 		return this;
