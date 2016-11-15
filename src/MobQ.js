@@ -1,4 +1,4 @@
-import { AutoTestLogCtrl } from './AutoTestLogCtrl';
+import { TestRunCtrl } from './TestRunCtrl';
 import { TestRunFinder } from './TestRunFinder';
 
 export default class MobQ {
@@ -17,8 +17,8 @@ export default class MobQ {
 		this.baseURL += `/${id}`;
 	}
 
-	newTestLog() {
-		return new AutoTestLogCtrl(this._getDriver());
+	newTestRun() {
+		return new TestRunCtrl(this._getDriver());
 	}
 
 	getFinder() {
