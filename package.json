@@ -1,6 +1,6 @@
 {
   "name": "mobq",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "main": "MobQ.js",
   "dependencies": {
     "axios": "^0.15.2"
