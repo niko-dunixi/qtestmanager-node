@@ -9,7 +9,7 @@ gulp.task('default', ['copy'], () => {
 });
 
 gulp.task('copy', ['clean'], () => {
-	gulp.src(['package.json', 'yarn.lock'])
+	gulp.src(['package.json', 'yarn.lock', 'README.md'])
 	.pipe(gulp.dest('build'));
 })
 
