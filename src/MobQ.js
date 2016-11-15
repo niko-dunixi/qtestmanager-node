@@ -18,20 +18,19 @@ export default class MobQ {
 	}
 
 	newTestLog() {
-		return new AutoTestLogCtrl(this._getDriver(`/test-runs`));
+		return new AutoTestLogCtrl(this._getDriver());
 	}
 
 	getFinder() {
-		this.finder = new TestRunFinder(this._getDriver(""));
+		this.finder = new TestRunFinder(this._getDriver());
 		return this.finder;
 	}
 
 
-	_getDriver(apiUrl) {
-		apiUrl = apiUrl || "";
+	_getDriver() {
 		let axios = require('axios');
 		this.driver = axios.create({
-			baseURL: this.baseURL + apiUrl,
+			baseURL: this.baseURL,
 			timeout: 1000,
 			headers: {
 				"Authorization" : this.token
