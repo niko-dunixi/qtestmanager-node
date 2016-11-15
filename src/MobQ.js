@@ -1,4 +1,4 @@
-import { TestRunCtrl } from './TestRunCtrl';
+import { TestRun } from './TestRun';
 
 export default class MobQ {
 
@@ -17,7 +17,7 @@ export default class MobQ {
 	}
 
 	newTestRun() {
-		return new TestRunCtrl(this._getDriver());
+		return new TestRun(this._getDriver());
 	}
 
 	_getDriver() {

@@ -1,4 +1,4 @@
-export class TestRunCtrl {
+export class TestRun {
 
 	constructor(driver) {
 		this.driver = driver;
