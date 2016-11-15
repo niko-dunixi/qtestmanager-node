@@ -1,5 +1,4 @@
 import { TestRunCtrl } from './TestRunCtrl';
-import { TestRunFinder } from './TestRunFinder';
 
 export default class MobQ {
 
@@ -20,12 +19,6 @@ export default class MobQ {
 	newTestRun() {
 		return new TestRunCtrl(this._getDriver());
 	}
-
-	getFinder() {
-		this.finder = new TestRunFinder(this._getDriver());
-		return this.finder;
-	}
-
 
 	_getDriver() {
 		let axios = require('axios');
