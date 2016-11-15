@@ -1,4 +1,5 @@
 import { TestRun } from './TestRun';
+import { TestExecution } from './TestExecution';
 
 export default class MobQ {
 
@@ -18,6 +19,10 @@ export default class MobQ {
 
 	newTestRun() {
 		return new TestRun(this._getDriver());
+	}
+
+	newTestExecution() {
+		return new TestExecution(this._getDriver());
 	}
 
 	_getDriver() {

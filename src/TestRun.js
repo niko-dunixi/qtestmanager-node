@@ -24,27 +24,33 @@ export class TestRun {
 		return this;
 	}
 
-	submit() {
-		this._checkForExistingRunForTestCase(this.testId, this.parentId, (exists) => {
-			if (!exists) {
-				this._makeSubmitRequest();
+	submit(callback) {
+		this._checkForExistingRunForTestCase(this.testId, this.parentId, (testRun) => {
+			if (testRun.exists) {
+				if (callback) callback(testRun);
 			} else {
-				console.log("Test Run for Test " + this.testId + " already exists");
+				this._makeSubmitRequest((newTestRun) => {
+					if (callback) callback(newTestRun);
+				});
 			}
 		})
 	}
 
 	_testIdExistsInResponse(response, testId) {
-		var exists = false
+		var testRun = {
+			exists: false,
+			id: 0
+		}
 		for (var run of response.data) {
 			var tcLink = this._getTestCaseFromLinks(run.links);
 			var idOfTestInRun = this._parseTestIdFromLinkObject(tcLink);
 			if (idOfTestInRun == testId) {
-				exists = true;
+				testRun.exists = true;
+				testRun.id = run.id;
 				break;
 			}
 		}
-		return exists;
+		return testRun;
 	}
 
 	_getTestCaseFromLinks(links) {
@@ -64,17 +70,17 @@ export class TestRun {
 		return foundId;
 	}
 
-	_makeSubmitRequest() {
-		this._getTestName().then((response) => {
+	_makeSubmitRequest(callback) {
+		this._getTestName().then((getResponse) => {
 			this.driver.post(this.submitUrl, {
-				name : response.data.name,
+				name : getResponse.data.name,
 				test_case: {
 					id : this.testId
 				}
 
 			})
-			.then(function (response) {
-				console.log(response);
+			.then(function (postResponse) {
+				callback(postResponse.data);
 			})
 			.catch(function (error) {
 				console.log(error.message, error);
