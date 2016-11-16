@@ -14,9 +14,9 @@ More features are soon to follow!
 var MobQ = require('mobq').default;
 
 var mobq = new MobQ(
-	"https://mobiquity.qtestnet.com",
-	32495,
-	"bW9iaXF1aXR5fGNweWxlQG1vYmlxdWl0eWluYy5jb206MTUxMDQyMDIyNjc5ODpiOWI4OTgwYjMzNDBhZDM4ODRiNGE0NzkxNjcwMGQyYQ"
+	"https://host.qtestnet.com",
+	projectId,
+	token
 	);
 
 // Create a new test run a cycle, suite, or release for a specific test case
