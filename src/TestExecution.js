@@ -75,7 +75,7 @@ export class TestExecution {
 				exe_end_date : new Date().toISOString(),
 				test_step_logs : stepLogs
 			}
-			if (this.ignoreSteps) body.test_step_logs = [];
+			if (this.ignoreSteps) delete body.test_step_logs;
 			this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
 			.catch(function (error) {
 				console.log(error.response.data);
