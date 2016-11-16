@@ -52,7 +52,7 @@ export class TestRun {
 		}
 		return testRun;
 	}
-
+//duplicated in Finder, refactor
 	_getTestCaseFromLinks(links) {
 		var tcLink = {};
 		for (let link of links) {
@@ -63,7 +63,7 @@ export class TestRun {
 		}
 		return tcLink;
 	}
-
+//duplicated in finder, refactor
 	_parseTestIdFromLinkObject(tcLink) {
 		var regex = /test-cases\/(\d+)/g;
 		var foundId = regex.exec(tcLink.href)[1];

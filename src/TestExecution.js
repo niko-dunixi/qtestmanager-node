@@ -1,11 +1,12 @@
 import { TestRun } from './TestRun';
-
+import { Finder } from './Finder';
 
 export class TestExecution {
 
 	constructor(driver) {
 		this.driver = driver;
 		this.testRun = new TestRun(driver);
+		this.ignoreSteps = true;
 	}
 
 	inCycle(cycleId) {
@@ -33,25 +34,56 @@ export class TestExecution {
 		return this;
 	}
 
+	withStepStatus(step, status) {
+		this.ignoreSteps = false;
+		this.stepLogs = this.stepLogs || [];
+		this.stepLogs[step - 1] = this.stepLogs[step -1] || {};
+		this.stepLogs[step - 1].status = status;
+		return this;
+	}
+
+	_setStepLogProperty(step, property, value) {
+		this.stepLogs = this.stepLogs || [];
+		this.stepLogs[step] = this.stepLogs[step] || {};
+		this.stepLogs[step][property] = value;
+	}
+
 	submit() {
 		this.testRun.submit((testRun) => {
 			this._createTestExecution(testRun.id);
 		});
 	}
 
+	_createStepLogsFromTestSteps(testSteps) {
+		if (testSteps) {
+			for (var i = 0; i < testSteps.length; i++) {
+				this._setStepLogProperty(i, "description", testSteps[i].description);
+				this._setStepLogProperty(i, "expected_result", testSteps[i].expected);
+			}
+			return this.stepLogs;
+		} else return [];
+	}
+
 	_createTestExecution(runId) {
-		this.driver.post(`/test-runs/${runId}/auto-test-logs`, {
-			status : this.status,
-			exe_start_date : new Date().toISOString(),
-			exe_end_date : new Date().toISOString()
+		let finder = new Finder(this.driver);
+		finder.findTestCaseByRunId(runId)
+		.then((response) => {
+			let stepLogs = this._createStepLogsFromTestSteps(response.data.test_steps);
+			let body = {
+				status : this.status,
+				exe_start_date : new Date().toISOString(),
+				exe_end_date : new Date().toISOString(),
+				test_step_logs : stepLogs
+			}
+			if (this.ignoreSteps) body.test_step_logs = [];
+			this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
+			.catch(function (error) {
+				console.log(error.response.data);
+			})
 		})
-		.then(function (response) {
-			console.log(response.data);
-		})
-		.catch(function (error) {
+		.catch((error) => {
 			console.log(error);
 		})
 	}
-
 }
 
