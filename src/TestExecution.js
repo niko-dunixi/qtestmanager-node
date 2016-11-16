@@ -40,7 +40,17 @@ export class TestExecution {
 	}
 
 	_createTestExecution(runId) {
-		console.log("CREATED TEST EXECUTION FOR: " + runId);
+		this.driver.post(`/test-runs/${runId}/auto-test-logs`, {
+			status : this.status,
+			exe_start_date : new Date().toISOString(),
+			exe_end_date : new Date().toISOString()
+		})
+		.then(function (response) {
+			console.log(response.data);
+		})
+		.catch(function (error) {
+			console.log(error);
+		})
 	}
 
 }
