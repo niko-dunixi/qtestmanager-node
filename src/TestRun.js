@@ -24,16 +24,21 @@ export class TestRun {
 		return this;
 	}
 
-	submit(callback) {
-		this._checkForExistingRunForTestCase(this.testId, this.parentId, (testRun) => {
+	submit() {
+		return this.driver.get(this.submitUrl)
+		.then((response) => {
+			var testRun = this._testIdExistsInResponse(response, this.testId);
 			if (testRun.exists) {
-				if (callback) callback(testRun);
+				var response = {
+					data : {
+						id: testRun.id
+					}
+				}
+				return Promise.resolve(response);
 			} else {
-				this._makeSubmitRequest((newTestRun) => {
-					if (callback) callback(newTestRun);
-				});
+				return this._makeSubmitRequest(testRun);
 			}
-		})
+		});
 	}
 
 	_testIdExistsInResponse(response, testId) {
@@ -70,17 +75,13 @@ export class TestRun {
 		return foundId;
 	}
 
-	_makeSubmitRequest(callback) {
-		this._getTestName().then((getResponse) => {
-			this.driver.post(this.submitUrl, {
+	_makeSubmitRequest(testRun) {
+		return this._getTestName().then((getResponse) => {
+			return this.driver.post(this.submitUrl, {
 				name : getResponse.data.name,
 				test_case: {
 					id : this.testId
 				}
-
-			})
-			.then(function (postResponse) {
-				callback(postResponse.data);
 			})
 			.catch(function (error) {
 				console.log(error.message, error);
@@ -93,16 +94,6 @@ export class TestRun {
 
 	_setSubmitUrl(parentId, parentType) {
 		this.submitUrl = `/test-runs?parentId=${parentId}&parentType=${parentType}`;
-	}
-
-	_checkForExistingRunForTestCase(testId, parentId, callback) {
-		this.driver.get(this.submitUrl)
-		.then((response) => {
-			callback(this._testIdExistsInResponse(response, testId));
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
 	}
 
 	_getTestName() {

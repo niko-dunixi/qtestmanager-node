@@ -49,8 +49,8 @@ export class TestExecution {
 	}
 
 	submit() {
-		this.testRun.submit((testRun) => {
-			this._createTestExecution(testRun.id);
+		return this.testRun.submit().then((response) => {
+			return this._createTestExecution(response.data.id);
 		});
 	}
 
@@ -66,7 +66,7 @@ export class TestExecution {
 
 	_createTestExecution(runId) {
 		let finder = new Finder(this.driver);
-		finder.findTestCaseByRunId(runId)
+		return finder.findTestCaseByRunId(runId)
 		.then((response) => {
 			let stepLogs = this._createStepLogsFromTestSteps(response.data.test_steps);
 			let body = {
@@ -76,7 +76,7 @@ export class TestExecution {
 				test_step_logs : stepLogs
 			}
 			if (this.ignoreSteps) delete body.test_step_logs;
-			this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
+			return this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
 			.catch(function (error) {
 				console.log(error.response.data);
 			})

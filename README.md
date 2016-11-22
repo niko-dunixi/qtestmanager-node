@@ -35,7 +35,8 @@ mobq.newTestExecution()
 	.submit();
 ```
 
-Note: If `withStepStatus(...)` is used, it must be used for all steps.
-If it's never called, the test execution will not show any steps.
+Note: If `withStepStatus(...)` is used, it must be used for all steps,
+otherwise the test execution will fail.
+If it's never called, the test execution will show all steps as 'UNDEFINED'.
 
 
