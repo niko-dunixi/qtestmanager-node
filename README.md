@@ -5,9 +5,11 @@ NPM package for consuming the qTest API
 ## Installation
 `npm install --save mobq`
 
-## Usage
-Currently, `mobq` can only create new test runs for your existing test cases.
-More features are soon to follow!
+## Updates
+### 1.1.5
+* Choose a suite and a test case, and mobq will automatically create a test run and execute it
+* Updated the submit calls for test runs and test executions to return promises instead of wrestling callbacks
+
 
 ### Example
 ```javascript
