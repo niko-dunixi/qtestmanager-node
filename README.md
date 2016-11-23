@@ -6,6 +6,8 @@ NPM package for consuming the qTest API
 `npm install --save mobq`
 
 ## Updates
+### 1.1.6
+* Add `addAttachment(name, contentType, base64String)` to allow uploading attachments to test execution
 ### 1.1.5
 * Choose a suite and a test case, and mobq will automatically create a test run and execute it
 * Updated the submit calls for test runs and test executions to return promises instead of wrestling callbacks

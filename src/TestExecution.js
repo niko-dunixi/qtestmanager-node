@@ -7,6 +7,7 @@ export class TestExecution {
 		this.driver = driver;
 		this.testRun = new TestRun(driver);
 		this.ignoreSteps = true;
+		this.attachments = [];
 	}
 
 	inCycle(cycleId) {
@@ -42,6 +43,16 @@ export class TestExecution {
 		return this;
 	}
 
+	addAttachment(name, contentType, data) {
+		var attachment = {
+			name : name,
+			content_type : contentType,
+			data : data
+		}
+		this.attachments.push(attachment);
+		return this;
+	}
+
 	_setStepLogProperty(step, property, value) {
 		this.stepLogs = this.stepLogs || [];
 		this.stepLogs[step] = this.stepLogs[step] || {};
@@ -73,7 +84,8 @@ export class TestExecution {
 				status : this.status,
 				exe_start_date : new Date().toISOString(),
 				exe_end_date : new Date().toISOString(),
-				test_step_logs : stepLogs
+				test_step_logs : stepLogs,
+				attachments : this.attachments
 			}
 			if (this.ignoreSteps) delete body.test_step_logs;
 			return this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
