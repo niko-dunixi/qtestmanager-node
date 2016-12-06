@@ -10,7 +10,7 @@ export default class MobQ {
 		this.baseURL = `${host}/api/v3/projects/${projectId}`;
 		this.driver = axios.create({
 			baseURL: this.baseURL,
-			timeout: 1000,
+			timeout: 10000,
 			headers: {
 				"Authorization" : token
 			}

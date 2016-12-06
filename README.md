@@ -6,6 +6,8 @@ NPM package for consuming the qTest API
 `npm install --save mobq`
 
 ## Updates
+### 1.1.7
+* Change the default timeout to 10 seconds instead of 1
 ### 1.1.6
 * Add `addAttachment(name, contentType, base64String)` to allow uploading attachments to test execution
 ### 1.1.5
