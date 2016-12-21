@@ -1,20 +1,24 @@
 import { TestRun } from './TestRun';
 import { TestExecution } from './TestExecution';
+import axios from 'axios';
 
 
 export default class MobQ {
 
-	constructor(host, projectId, token) {
-		let axios = require('axios');
+	constructor(host) {
 		this.host = host;
-		this.baseURL = `${host}/api/v3/projects/${projectId}`;
 		this.driver = axios.create({
-			baseURL: this.baseURL,
+			baseURL: host,
 			timeout: 10000,
 			headers: {
-				"Authorization" : token
+				"Authorization" : "Basic QXBpQ29uc3VtZXI6",
+				"Content-Type" : "application/x-www-form-urlencoded"
 			}
 		});
+	}
+
+	setProjectId(id) {
+		this.projectId = id;
 	}
 
 	debug(on) {
@@ -45,11 +49,41 @@ export default class MobQ {
 	}
 
 	newTestRun() {
+		this.driver.defaults.headers["Content-Type"] = "application/json";
+		this.driver.defaults.headers["Accept"] = "application/json";
+		this.driver.defaults.baseURL = `${this.host}/api/v3/projects/${this.projectId}`;
 		return new TestRun(this.driver);
 	}
 
 	newTestExecution() {
+		this.driver.defaults.headers["Content-Type"] = "application/json";
+		this.driver.defaults.headers["Accept"] = "application/json";
+		this.driver.defaults.baseURL = `${this.host}/api/v3/projects/${this.projectId}`;
 		return new TestExecution(this.driver);
+	}
+
+	logout() {
+		console.log("Revoking token");
+		this.driver.defaults.baseURL = this.host;
+		return this.driver.post('/oauth/revoke');
+	}
+
+	login(credentials) {
+		return this._getToken(credentials).then((response) => {
+			this.driver.defaults.headers["Authorization"] = `${response.data.token_type} ${response.data.access_token}`;
+		}).catch(function(error) {
+			console.log(error);
+		});
+	}
+
+	_getToken(credentials) {
+		var querystring = require('querystring');
+		var form = {
+			grant_type: 'password',
+			username: credentials.username,
+			password: credentials.password
+		} 
+		return this.driver.post('/oauth/token', querystring.stringify(form));
 	}
 
 }

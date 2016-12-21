@@ -14,7 +14,7 @@ export class Finder {
 	_getTestCase(response) {
 		let tcLink = this._getTestCaseFromLinks(response.data.links);
 		let tcId = this._parseTestIdFromLinkObject(tcLink);
-		return this.driver.get(`test-cases/${tcId}?expand=teststep`);
+		return this.driver.get(`/test-cases/${tcId}?expand=teststep`);
 	}
 
 	_getTestCaseFromLinks(links) {
