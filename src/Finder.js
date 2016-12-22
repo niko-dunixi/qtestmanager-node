@@ -11,13 +11,22 @@ export class Finder {
 
 	}
 
+	findTestCaseRunsInModule(moduleId, moduleType) {
+		var searchBody = {
+			"object_type": "test-runs",
+			"fields": ["*"],
+			"query": `'${moduleType}' = '${moduleId}'`
+		}
+		return this.driver.post('/search', searchBody);
+	}
+
 	_getTestCase(response) {
-		let tcLink = this._getTestCaseFromLinks(response.data.links);
-		let tcId = this._parseTestIdFromLinkObject(tcLink);
+		let tcLink = this.getTestCaseFromLinks(response.data.links);
+		let tcId = this.parseTestIdFromLinkObject(tcLink);
 		return this.driver.get(`/test-cases/${tcId}?expand=teststep`);
 	}
 
-	_getTestCaseFromLinks(links) {
+	getTestCaseFromLinks(links) {
 		var tcLink = {};
 		for (let link of links) {
 			if (link.rel == 'test-case') {
@@ -28,7 +37,7 @@ export class Finder {
 		return tcLink;
 	}
 
-	_parseTestIdFromLinkObject(tcLink) {
+	parseTestIdFromLinkObject(tcLink) {
 		var regex = /test-cases\/(\d+)/g;
 		var foundId = regex.exec(tcLink.href)[1];
 		return foundId;
