@@ -30,6 +30,11 @@ export class TestExecution {
 		return this;
 	}
 
+	forRun(runId) {
+		this.runId = runId;
+		return this;
+	}
+
 	withStatus(status) {
 		this.status = status;
 		return this;
@@ -57,6 +62,10 @@ export class TestExecution {
 		this.stepLogs = this.stepLogs || [];
 		this.stepLogs[step] = this.stepLogs[step] || {};
 		this.stepLogs[step][property] = value;
+	}
+
+	submitForExistingRun() {
+		return this._createTestExecution(this.runId);
 	}
 
 	submit() {
