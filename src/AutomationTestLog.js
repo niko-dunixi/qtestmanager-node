@@ -1,14 +1,109 @@
 import { TestRun } from './TestRun';
 import { Finder } from './Finder';
 
-export class TestExecution {
+export class AutomationTestLog extends QTestResource {
 
-	constructor(driver) {
-		this.driver = driver;
-		this.testRun = new TestRun(driver);
-		this.ignoreSteps = true;
-		this.attachments = [];
+	constructor(autoTestLog) {
+		super(autoTestLog);
 	}
+
+	get status() {
+		return this.json.status;
+	}
+
+	set status(status) {
+		this.json.status = status;
+	}
+
+	get executionStartDate() {
+		return this.json.exe_start_date;
+	}
+
+	set executionStartDate(exeStartDate) {
+		this.json.exe_start_date = exeStartDate;
+	}
+
+	get executionEndDate() {
+		return this.json.exe_end_date;
+	}
+
+	set executionEndDate(exeEndDate) {
+		this.json.exe_end_date = exeEndDate;
+	}
+
+	get name() {
+		return this.name;
+	}
+
+	set name(name) {
+		this.json.name = name;
+	}
+
+	get automationContent() {
+		return this.json.automation_content;
+	}
+
+	set automationContent(automationContent) {
+		this.json.automation_content = automationContent;
+	}
+
+	get attachments() {
+		return this.attachments;
+	}
+
+	set attachments(attachments) {
+		this.json.attachments = attachments;
+	}
+
+	get note() {
+		return this.json.note;
+	}
+
+	set note(note) {
+		this.json.note = note;
+	}
+
+	get testCaseVersionId() {
+		return this.json.test_case_version_id;
+	}
+
+	set testCaseVersionId(id) {
+		this.json.test_case_version_id = id;
+	}
+
+	get testStepLogs() {
+		return this.json.test_step_logs;
+	}
+
+	set testStepLogs(testStepLogs) {
+		this.json.test_step_logs = testStepLogs;
+	}
+
+	get testRunId() {
+		return this.testRunId;
+	}
+
+	set testRunId(id) {
+		this.testRunId = id;
+	}
+
+	get projectId() {
+		return this.projectId;
+	}
+
+	set projectId(id) {
+		this.projectId = projectId;
+	}
+
+	get endpoint() {
+		try {
+			return `/api/v3/projects/${this.projectId}/test-runs/${this.testRunId}/auto-test-logs`;			
+		}
+		catch (error) {
+			console.log("Failed to construct endpoint. Did you set the project and test ids?", error);
+		}
+	}
+
 
 	inCycle(cycleId) {
 		this.testRun.inCycle(cycleId);

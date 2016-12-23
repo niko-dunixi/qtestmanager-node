@@ -1,6 +1,8 @@
 import { TestRun } from './TestRun';
-import { TestExecution } from './TestExecution';
+import { AutomationTestLog } from './AutomationTestLog';
 import { Finder } from './Finder';
+import { Authenticator } from './Authenticator';
+import { Requester } from './Requester';
 
 import axios from 'axios';
 
@@ -11,18 +13,13 @@ export default class MobQ {
 
 	constructor(host) {
 		this.host = host;
-		this.driver = axios.create({
-			baseURL: host,
-			timeout: 10000,
-			headers: {
-				"Authorization" : "Basic QXBpQ29uc3VtZXI6",
-				"Content-Type" : "application/x-www-form-urlencoded"
-			}
-		});
+		this.authenticator = new Authenticator(host);
 	}
 
-	setProjectId(id) {
-		this.projectId = id;
+	get finder() {
+		if (this.authenticated) {
+			return new Finder(this.host, this.authenticator.token());
+		}
 	}
 
 	debug(on) {
@@ -132,27 +129,16 @@ export default class MobQ {
 	}
 
 	logout() {
-		this.driver.defaults.baseURL = this.host;
-		return this.driver.post('/oauth/revoke');
+		return this.authenticator.logout();
 	}
 
-	login(credentials) {
-		return this._getToken(credentials).then((response) => {
-			this.driver.defaults.headers["Authorization"] = `${response.data.token_type} ${response.data.access_token}`;
-		}).catch(function(error) {
-			console.log(error);
+	login(username, password) {
+		return this.authenticator.login(username, password).then((response) => {
+			this.authenticated = response.status == 200;
 		});
 	}
 
-	_getToken(credentials) {
-		var querystring = require('querystring');
-		var form = {
-			grant_type: 'password',
-			username: credentials.username,
-			password: credentials.password
-		} 
-		return this.driver.post('/oauth/token', querystring.stringify(form));
-	}
+
 
 }
 	

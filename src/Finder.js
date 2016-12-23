@@ -1,6 +1,8 @@
-export class Finder {
-	constructor(driver) {
-		this.driver = driver;
+export class Finder extends Requester {
+
+	constructor(host, token) {
+		super(host);
+		this.token = token;
 	}
 
 	findTestCaseByRunId(runId) {
