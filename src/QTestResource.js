@@ -1,19 +1,19 @@
 export class QTestResource {
 
-	set updateURL(url) {
-		this._updateURL = url;
-	}
-
 	get updateURL() {
 		return this._updateURL;
 	}
 
-	set createURL(url) {
-		this._createURL = url;
+	set updateURL(url) {
+		this._updateURL = url;
 	}
 
 	get createURL() {
 		return this._createURL;
+	}
+
+	set createURL(url) {
+		this._createURL = url;
 	}
 
 	get links() {
@@ -22,6 +22,22 @@ export class QTestResource {
 
 	set links(links) {
 		this._links = links;
+	}
+
+	get id() {
+		return this._id;
+	}
+
+	set id(id) {
+		this._id = id;
+	}
+
+	get name() {
+		return this._name;
+	}
+
+	set name(name) {
+		this._name = name;
 	}
 
 	getLink(linkName) {

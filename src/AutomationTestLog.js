@@ -8,15 +8,6 @@ export class AutomationTestLog extends QTestResource {
 		super();
 	}
 
-	get id() {
-		return this._id;
-	}
-
-	set id(id) {
-		this._id = id;
-		this._refreshURL();
-	}
-
 	get status() {
 		return this._status;
 	}
@@ -39,14 +30,6 @@ export class AutomationTestLog extends QTestResource {
 
 	set executionEndDate(executionEndDate) {
 		this._executionEndDate = executionEndDate;
-	}
-
-	get name() {
-		return this._name;
-	}
-
-	set name(name) {
-		this._name = name;
 	}
 
 	get automationContent() {

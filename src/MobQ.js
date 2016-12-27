@@ -38,6 +38,10 @@ export default class MobQ {
 		return new TestCase();
 	}
 
+	get testRun() {
+		return new TestRun();
+	}
+
 	createTestCase(testCase) {
 		return this.sender.create(testCase);
 	}
