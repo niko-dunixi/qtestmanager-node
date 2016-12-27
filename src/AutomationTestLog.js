@@ -1,10 +1,11 @@
 import { TestRun } from './TestRun';
 import { Finder } from './Finder';
+import { QTestResource } from './QTestResource';
 
 export class AutomationTestLog extends QTestResource {
 
-	constructor(autoTestLog) {
-		super(autoTestLog);
+	constructor() {
+		super();
 	}
 
 	get status() {
@@ -80,126 +81,26 @@ export class AutomationTestLog extends QTestResource {
 	}
 
 	get testRunId() {
-		return this.testRunId;
+		return this.runId;
 	}
 
 	set testRunId(id) {
-		this.testRunId = id;
+		this.runId = id;
+		this._updateEndpoint();
 	}
 
 	get projectId() {
-		return this.projectId;
+		return this.project;
 	}
 
 	set projectId(id) {
-		this.projectId = projectId;
+		this.project = id;
+		this._updateEndpoint();
 	}
 
-	get endpoint() {
-		try {
-			return `/api/v3/projects/${this.projectId}/test-runs/${this.testRunId}/auto-test-logs`;			
-		}
-		catch (error) {
-			console.log("Failed to construct endpoint. Did you set the project and test ids?", error);
-		}
+	_updateEndpoint() {
+		this.endpoint = `/api/v3/projects/${this.project}/test-runs/${this.runId}/auto-test-logs`;	
 	}
 
-
-	inCycle(cycleId) {
-		this.testRun.inCycle(cycleId);
-		return this;
-	}
-
-	inSuite(suiteId) {
-		this.testRun.inSuite(suiteId);
-		return this;
-	}
-
-	inRelease(releaseId) {
-		this.testRun.inRelease(releaseId);
-		return this;
-	}
-
-	forTest(testId) {
-		this.testRun.forTest(testId);
-		return this;
-	}
-
-	forRun(runId) {
-		this.runId = runId;
-		return this;
-	}
-
-	withStatus(status) {
-		this.status = status;
-		return this;
-	}
-
-	withStepStatus(step, status) {
-		this.ignoreSteps = false;
-		this.stepLogs = this.stepLogs || [];
-		this.stepLogs[step - 1] = this.stepLogs[step -1] || {};
-		this.stepLogs[step - 1].status = status;
-		return this;
-	}
-
-	addAttachment(name, contentType, data) {
-		var attachment = {
-			name : name,
-			content_type : contentType,
-			data : data
-		}
-		this.attachments.push(attachment);
-		return this;
-	}
-
-	_setStepLogProperty(step, property, value) {
-		this.stepLogs = this.stepLogs || [];
-		this.stepLogs[step] = this.stepLogs[step] || {};
-		this.stepLogs[step][property] = value;
-	}
-
-	submitForExistingRun() {
-		return this._createTestExecution(this.runId);
-	}
-
-	submit() {
-		return this.testRun.submit().then((response) => {
-			return this._createTestExecution(response.data.id);
-		});
-	}
-
-	_createStepLogsFromTestSteps(testSteps) {
-		if (testSteps) {
-			for (var i = 0; i < testSteps.length; i++) {
-				this._setStepLogProperty(i, "description", testSteps[i].description);
-				this._setStepLogProperty(i, "expected_result", testSteps[i].expected);
-			}
-			return this.stepLogs;
-		} else return [];
-	}
-
-	_createTestExecution(runId) {
-		let finder = new Finder(this.driver);
-		return finder.findTestCaseByRunId(runId)
-		.then((response) => {
-			let stepLogs = this._createStepLogsFromTestSteps(response.data.test_steps);
-			let body = {
-				status : this.status,
-				exe_start_date : new Date().toISOString(),
-				exe_end_date : new Date().toISOString(),
-				test_step_logs : stepLogs,
-				attachments : this.attachments
-			}
-			if (this.ignoreSteps) delete body.test_step_logs;
-			return this.driver.post(`/test-runs/${runId}/auto-test-logs`, body)
-			.catch(function (error) {
-				console.log(error.response.data);
-			})
-		})
-		.catch((error) => {
-			console.log(error);
-		})
-	}
 }
 

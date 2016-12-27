@@ -1,3 +1,5 @@
+import { Requester } from './Requester';
+
 export class Finder extends Requester {
 
 	constructor(host, token) {

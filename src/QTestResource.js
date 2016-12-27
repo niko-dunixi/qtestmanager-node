@@ -1,11 +1,19 @@
 export class QTestResource {
 
-	constructor(existingResource) {
-		this.json = existingResource.json() || {};
+	constructor() {
+		this.bodyJson = {};
 	}
 
 	get json() {
-		return this.json;
+		return this.bodyJson;
+	}
+
+	set endpoint(endpoint) {
+		this.restEndpoint = endpoint;
+	}
+
+	get endpoint() {
+		return this.restEndpoint;
 	}
 
 	

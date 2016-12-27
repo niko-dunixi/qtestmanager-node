@@ -2,6 +2,7 @@ import { TestRun } from './TestRun';
 import { AutomationTestLog } from './AutomationTestLog';
 import { Finder } from './Finder';
 import { Authenticator } from './Authenticator';
+import { Sender } from './Sender';
 import { Requester } from './Requester';
 
 import axios from 'axios';
@@ -18,35 +19,22 @@ export default class MobQ {
 
 	get finder() {
 		if (this.authenticated) {
-			return new Finder(this.host, this.authenticator.token());
+			return new Finder(this.host, this.authenticator.token);
 		}
 	}
 
-	debug(on) {
-		if (on) {
-			this.reqInterceptor = this.driver.interceptors.request.use(function (config) {
-				console.log("----- Request -----");
-				console.log(config.method, config.url);
-				console.log(config.headers);
-				console.log(config.data);
-				console.log("----- End Request -----");
-				return config;
-			}, function (error) {
-				return Promise.reject(error);
-			});
-			this.resInterceptor = this.driver.interceptors.response.use(function (response) {
-				console.log("----- Response -----");
-				console.log(response.headers);
-				console.log(response.data);
-				console.log("----- End Response -----");
-				return response;
-			}, function(error) {
-				return Promise.reject(error);
-			});
-		} else {
-			if (this.reqInterceptor) this.driver.interceptors.request.eject(this.reqInterceptor);
-			if (this.resInterceptor) this.driver.interceptors.response.eject(this.resInterceptor);
+	get sender() {
+		if (this.authenticated) {
+			return new Sender(this.host, this.authenticator.token);
 		}
+	}
+
+	get automationTestLog() {
+		return new AutomationTestLog();
+	}
+
+	submitAutomationTestLog(autoTestLog) {
+		return this.sender.submit(autoTestLog);
 	}
 
 	newTestRun() {
