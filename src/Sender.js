@@ -9,7 +9,11 @@ export class Sender extends Requester {
 		this.header = {"name": "Accept", "value": "application/json"};
 	}
 
-	submit(resource) {
-		return this.driver.post(resource.endpoint, resource.json);
+	create(resource) {
+		return this.driver.post(resource.createURL, resource.toJSON());
+	}
+
+	update(resource) {
+		return this.driver.put(resource.updateURL, resource.toJSON());
 	}
 }

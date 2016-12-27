@@ -1,18 +1,31 @@
 import { Requester } from './Requester';
+import { TestCase } from './TestCase';
+import { AutomationTestLog } from './AutomationTestLog';
 
 export class Finder extends Requester {
 
 	constructor(host, token) {
 		super(host);
 		this.token = token;
+		this.header = {"name": "Authorization", "value": token};
+		this.header = {"name": "Accept", "value": "application/json"};
 	}
 
-	findTestCaseByRunId(runId) {
-		return this.driver.get(`/test-runs/${runId}`)
+	findTestCaseByRunId(projectId, runId) {
+		return this.driver.get(`/api/v3/projects/${projectId}/test-runs/${runId}?expand=testcase.teststep`)
 		.then((response) => {
-			return this._getTestCase(response);
+			let testCase = new TestCase();
+			return testCase.fromJSON(response.data.test_case);
 		});
 
+	}
+
+	findLastRun(projectId, runId) {
+		return this.driver.get(`/api/v3/projects/${projectId}/test-runs/${runId}/test-logs/last-run`)
+		.then((response) => {
+			let testLog = new AutomationTestLog();
+			return testLog.fromJSON(response.data);
+		});
 	}
 
 	findTestCaseRunsInModule(moduleId, moduleType) {
@@ -24,26 +37,4 @@ export class Finder extends Requester {
 		return this.driver.post('/search', searchBody);
 	}
 
-	_getTestCase(response) {
-		let tcLink = this.getTestCaseFromLinks(response.data.links);
-		let tcId = this.parseTestIdFromLinkObject(tcLink);
-		return this.driver.get(`/test-cases/${tcId}?expand=teststep`);
-	}
-
-	getTestCaseFromLinks(links) {
-		var tcLink = {};
-		for (let link of links) {
-			if (link.rel == 'test-case') {
-				tcLink = link;
-				break;
-			}
-		}
-		return tcLink;
-	}
-
-	parseTestIdFromLinkObject(tcLink) {
-		var regex = /test-cases\/(\d+)/g;
-		var foundId = regex.exec(tcLink.href)[1];
-		return foundId;
-	}
 }

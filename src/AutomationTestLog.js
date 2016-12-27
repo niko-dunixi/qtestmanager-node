@@ -8,98 +8,136 @@ export class AutomationTestLog extends QTestResource {
 		super();
 	}
 
+	get id() {
+		return this._id;
+	}
+
+	set id(id) {
+		this._id = id;
+		this._refreshURL();
+	}
+
 	get status() {
-		return this.json.status;
+		return this._status;
 	}
 
 	set status(status) {
-		this.json.status = status;
+		this._status = status;
 	}
 
 	get executionStartDate() {
-		return this.json.exe_start_date;
+		return this._executionStartDate;
 	}
 
-	set executionStartDate(exeStartDate) {
-		this.json.exe_start_date = exeStartDate;
+	set executionStartDate(executionStartDate) {
+		this._executionStartDate = executionStartDate;
 	}
 
 	get executionEndDate() {
-		return this.json.exe_end_date;
+		return this._executionEndDate;
 	}
 
-	set executionEndDate(exeEndDate) {
-		this.json.exe_end_date = exeEndDate;
+	set executionEndDate(executionEndDate) {
+		this._executionEndDate = executionEndDate;
 	}
 
 	get name() {
-		return this.name;
+		return this._name;
 	}
 
 	set name(name) {
-		this.json.name = name;
+		this._name = name;
 	}
 
 	get automationContent() {
-		return this.json.automation_content;
+		return this._automationCcontent;
 	}
 
 	set automationContent(automationContent) {
-		this.json.automation_content = automationContent;
+		this._automationContent = automationContent;
 	}
 
 	get attachments() {
-		return this.attachments;
+		return this._attachments;
 	}
 
 	set attachments(attachments) {
-		this.json.attachments = attachments;
+		this._attachments = attachments;
 	}
 
 	get note() {
-		return this.json.note;
+		return this._note;
 	}
 
 	set note(note) {
-		this.json.note = note;
+		this._note = note;
 	}
 
 	get testCaseVersionId() {
-		return this.json.test_case_version_id;
+		return this._testCaseVersionId;
 	}
 
 	set testCaseVersionId(id) {
-		this.json.test_case_version_id = id;
+		this._testCaseVersionId = id;
 	}
 
 	get testStepLogs() {
-		return this.json.test_step_logs;
+		return this._testStepLogs;
 	}
 
 	set testStepLogs(testStepLogs) {
-		this.json.test_step_logs = testStepLogs;
+		this._testStepLogs = testStepLogs;
 	}
 
 	get testRunId() {
-		return this.runId;
+		return this._testRunId;
 	}
 
 	set testRunId(id) {
-		this.runId = id;
-		this._updateEndpoint();
+		this._testRunId = id;
+		this._refreshURL();
 	}
 
 	get projectId() {
-		return this.project;
+		return this._projectId;
 	}
 
 	set projectId(id) {
-		this.project = id;
-		this._updateEndpoint();
+		this._projectId = id;
+		this._refreshURL();
 	}
 
-	_updateEndpoint() {
-		this.endpoint = `/api/v3/projects/${this.project}/test-runs/${this.runId}/auto-test-logs`;	
+	toJSON() {
+		let json = {
+			links: this.links,
+			id: this.id,
+			exe_start_date: this.executionStartDate,
+			exe_end_date: this.executionEndDate,
+			attachments: this.attachments,
+			status: this.status,
+			name: this.name,
+			automation_content: this.automationContent,
+			note: this.note,
+			test_step_logs: this.testStepLogs
+		};
+		return json;
+	}
+
+	fromJSON(json) {
+		this.links = json.links;
+		this.id = json.id;
+		this.testCaseVersionId = json.test_case_version_id;
+		this.executionStartDate = json.exe_start_date;
+		this.executionEndDate = json.exe_end_date;
+		this.attachments = json.attachments;
+		this.status = json.status.name;
+		this.testStepLogs = json.test_step_logs;
+		this.note = json.note || "";
+		return this;
+	}
+
+	_refreshURL() {
+		this.createURL = `/api/v3/projects/${this.projectId}/test-runs/${this.testRunId}/auto-test-logs`;
 	}
 
 }

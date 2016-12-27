@@ -3,11 +3,11 @@ var querystring = require('querystring');
 
 export class Requester {
 	constructor(host) {
-		this.axiosDriver = axios.create({ baseURL: host });
+		this._driver = axios.create({ baseURL: host });
 	}
 
 	get driver() {
-		return this.axiosDriver;
+		return this._driver;
 	}
 
 	set header(header) {
@@ -39,6 +39,7 @@ export class Requester {
 			if (this.reqInterceptor) this.driver.interceptors.request.eject(this.reqInterceptor);
 			if (this.resInterceptor) this.driver.interceptors.response.eject(this.resInterceptor);
 		}
+		return this;
 	}
 
 	clearHeaders() {

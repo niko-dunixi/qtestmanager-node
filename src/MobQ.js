@@ -4,6 +4,7 @@ import { Finder } from './Finder';
 import { Authenticator } from './Authenticator';
 import { Sender } from './Sender';
 import { Requester } from './Requester';
+import { TestCase } from './TestCase';
 
 import axios from 'axios';
 
@@ -33,8 +34,16 @@ export default class MobQ {
 		return new AutomationTestLog();
 	}
 
-	submitAutomationTestLog(autoTestLog) {
-		return this.sender.submit(autoTestLog);
+	get testCase() {
+		return new TestCase();
+	}
+
+	createTestCase(testCase) {
+		return this.sender.create(testCase);
+	}
+
+	createAutomationTestLog(autoTestLog) {
+		return this.sender.create(autoTestLog);
 	}
 
 	newTestRun() {

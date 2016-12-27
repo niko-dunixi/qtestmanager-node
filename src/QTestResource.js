@@ -1,19 +1,36 @@
 export class QTestResource {
 
-	constructor() {
-		this.bodyJson = {};
+	set updateURL(url) {
+		this._updateURL = url;
 	}
 
-	get json() {
-		return this.bodyJson;
+	get updateURL() {
+		return this._updateURL;
 	}
 
-	set endpoint(endpoint) {
-		this.restEndpoint = endpoint;
+	set createURL(url) {
+		this._createURL = url;
 	}
 
-	get endpoint() {
-		return this.restEndpoint;
+	get createURL() {
+		return this._createURL;
+	}
+
+	get links() {
+		return this._links;
+	}
+
+	set links(links) {
+		this._links = links;
+	}
+
+	getLink(linkName) {
+		for (let link of this.links) {
+			if (link.rel = linkName) {
+				return link.href;
+				break;
+			}
+		}
 	}
 
 	

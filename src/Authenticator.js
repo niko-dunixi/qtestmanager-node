@@ -9,15 +9,14 @@ export class Authenticator extends Requester {
 	}
 
 	get token() {
-		return this.authToken;
+		return this._token;
 	}
 
 	set token(token) {
-		this.authToken = token;
+		this._token = token;
 	}
 
 	login(username, password) {
-		this.debug(true);
 		var form = this.stringify({
 			grant_type: 'password',
 			username: username,
@@ -25,7 +24,7 @@ export class Authenticator extends Requester {
 		});
 
 		return this.driver.post('/oauth/token', form).then((response) => {
-			this.authToken = `${response.data.token_type} ${response.data.access_token}`;
+			this._token = `${response.data.token_type} ${response.data.access_token}`;
 			return response;
 		});
 	}
