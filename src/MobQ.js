@@ -46,18 +46,8 @@ export default class MobQ {
 		return this.sender.create(autoTestLog);
 	}
 
-	newTestRun() {
-		this.driver.defaults.headers["Content-Type"] = "application/json";
-		this.driver.defaults.headers["Accept"] = "application/json";
-		this.driver.defaults.baseURL = `${this.host}/api/v3/projects/${this.projectId}`;
-		return new TestRun(this.driver);
-	}
-
-	newTestExecution() {
-		this.driver.defaults.headers["Content-Type"] = "application/json";
-		this.driver.defaults.headers["Accept"] = "application/json";
-		this.driver.defaults.baseURL = `${this.host}/api/v3/projects/${this.projectId}`;
-		return new TestExecution(this.driver);
+	createTestRun(testRun) {
+		return this.sender.create(testRun);
 	}
 
 	submitJUnitResults(xml, qtestLocation) {
