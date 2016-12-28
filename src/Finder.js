@@ -1,6 +1,9 @@
 import { Requester } from './Requester';
 import { TestCase } from './TestCase';
 import { AutomationTestLog } from './AutomationTestLog';
+import { Query } from './Query';
+import { QueryResult } from './QueryResult';
+import { TestRun } from './TestRun';
 
 export class Finder extends Requester {
 
@@ -9,6 +12,7 @@ export class Finder extends Requester {
 		this.token = token;
 		this.header = {"name": "Authorization", "value": token};
 		this.header = {"name": "Accept", "value": "application/json"};
+		this.header = {"name": "Content-Type", "value": "application/json"};
 	}
 
 	findTestCaseByRunId(projectId, runId) {
@@ -28,13 +32,58 @@ export class Finder extends Requester {
 		});
 	}
 
-	findTestCaseRunsInModule(moduleId, moduleType) {
-		var searchBody = {
-			"object_type": "test-runs",
-			"fields": ["*"],
-			"query": `'${moduleType}' = '${moduleId}'`
-		}
-		return this.driver.post('/search', searchBody);
+	findTestRunsInModule(projectId, moduleId, moduleType) {
+		var query = new Query();
+		query.objectType = "test-runs";
+		query.addField("name");
+		query.query = `'${moduleType}' = '${moduleId}'`;
+
+		return this.runQuery(projectId, query)
+		.then((queryResult) => {
+			let queries = [];
+			for (var i = 1; i <= queryResult.pageCount; i++) {
+				query.page = i;
+				queries.push(this.runQuery(projectId, query));
+			}
+			return Promise.all(queries)
+			.then((queryResults) => {
+				let testRuns = [];
+				for (var queryResult of queryResults) {
+					for (var item of queryResult.items) {
+						testRuns.push(new TestRun().fromJSON(item));
+					}
+				}
+				return testRuns;
+			});
+		});
 	}
 
+	runQuery(projectId, query) {
+		let params = query.searchParams;
+		return this.driver.post(`/api/v3/projects/${projectId}/search${params}`, query.toJSON())
+		.then(function(response) {
+			return new QueryResult().fromJSON(response.data);
+		});
+	}
+
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

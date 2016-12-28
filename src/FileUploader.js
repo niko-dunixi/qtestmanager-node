@@ -35,10 +35,6 @@ export class FileUploader {
 
 				}
 			}
-			this.driver.defaults.headers["Content-Type"] = "application/json";
-			this.driver.defaults.headers["Accept"] = "application/json";
-			this.driver.defaults.baseURL = `${this.host}/api/v3/projects/${this.projectId}`;
-			var finder = new Finder(this.driver);
 			promiseToReturn = finder.findTestCaseRunsInModule(qtestLocation.id, qtestLocation.type).then((response) => {
 				var runsInModule = [];
 				var promises = [];
