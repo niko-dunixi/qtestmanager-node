@@ -25,7 +25,7 @@ export class Authenticator extends Requester {
 
 		return this.driver.post('/oauth/token', form).then((response) => {
 			this._token = `${response.data.token_type} ${response.data.access_token}`;
-			return response;
+			return this._token;
 		});
 	}
 

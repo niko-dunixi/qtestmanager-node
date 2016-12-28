@@ -1,6 +1,6 @@
 import { Requester } from './Requester';
 
-export class Sender extends Requester {
+export class Saver extends Requester {
 
 	constructor(host, token) {
 		super(host);
@@ -9,11 +9,11 @@ export class Sender extends Requester {
 		this.header = {"name": "Accept", "value": "application/json"};
 	}
 
-	create(resource) {
+	saveNew(resource) {
 		return this.driver.post(resource.createURL, resource.toJSON());
 	}
 
-	update(resource) {
+	saveChanges(resource) {
 		return this.driver.put(resource.updateURL, resource.toJSON());
 	}
 }

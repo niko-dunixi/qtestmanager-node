@@ -1,7 +1,7 @@
 {
   "name": "mobq",
   "version": "1.2.0",
-  "main": "MobQ.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/cpyle0819/mobq.git"

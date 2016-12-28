@@ -1,57 +1,14 @@
-import { TestRun } from './TestRun';
-import { AutomationTestLog } from './AutomationTestLog';
 import { Finder } from './Finder';
-import { Authenticator } from './Authenticator';
-import { Sender } from './Sender';
-import { Requester } from './Requester';
-import { TestCase } from './TestCase';
-
-import axios from 'axios';
+import { AutomationTestLog } from './AutomationTestLog';
+import { Saver } from './Saver';
 
 var xml2js = require('xml2js');
 
+export class FileUploader {
 
-export default class MobQ {
-
-	constructor(host) {
-		this.host = host;
-		this.authenticator = new Authenticator(host);
-	}
-
-	get finder() {
-		if (this.authenticated) {
-			return new Finder(this.host, this.authenticator.token);
-		}
-	}
-
-	get sender() {
-		if (this.authenticated) {
-			return new Sender(this.host, this.authenticator.token);
-		}
-	}
-
-	get automationTestLog() {
-		return new AutomationTestLog();
-	}
-
-	get testCase() {
-		return new TestCase();
-	}
-
-	get testRun() {
-		return new TestRun();
-	}
-
-	createTestCase(testCase) {
-		return this.sender.create(testCase);
-	}
-
-	createAutomationTestLog(autoTestLog) {
-		return this.sender.create(autoTestLog);
-	}
-
-	createTestRun(testRun) {
-		return this.sender.create(testRun);
+	constructor(host, token) {
+		this.finder = new Finder(host, token);
+		this.sender = new Sender(host, token);
 	}
 
 	submitJUnitResults(xml, qtestLocation) {
@@ -118,19 +75,4 @@ export default class MobQ {
 		});
 		return promiseToReturn;
 	}
-
-	logout() {
-		return this.authenticator.logout();
-	}
-
-	login(username, password) {
-		return this.authenticator.login(username, password).then((response) => {
-			this.authenticated = response.status == 200;
-		});
-	}
-
-
-
 }
-	
-
