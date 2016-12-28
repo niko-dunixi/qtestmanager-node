@@ -35,7 +35,7 @@ export class FileUploader {
 
 				}
 			}
-			promiseToReturn = finder.findTestCaseRunsInModule(qtestLocation.id, qtestLocation.type).then((response) => {
+			promiseToReturn = finder.findTestRunsInModule(qtestLocation.id, qtestLocation.type).then((response) => {
 				var runsInModule = [];
 				var promises = [];
 				for (var run of response.data.items) {

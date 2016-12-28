@@ -35,36 +35,41 @@ export class Finder extends Requester {
 	findTestRunsInModule(projectId, moduleId, moduleType) {
 		var query = new Query();
 		query.objectType = "test-runs";
-		query.addField("name");
 		query.query = `'${moduleType}' = '${moduleId}'`;
 
+		return this.search(projectId, query)
+		.then((queryResults) => {
+			let testRuns = [];
+			for (var queryResult of queryResults) {
+				for (var item of queryResult.items) {
+					testRuns.push(new TestRun().fromJSON(item));
+				}
+			}
+			return testRuns;
+		});
+	}
+
+	search(projectId, query) {
 		return this.runQuery(projectId, query)
 		.then((queryResult) => {
-			let queries = [];
-			for (var i = 1; i <= queryResult.pageCount; i++) {
+			let queries = [queryResult];
+			for (var i = 2; i <= queryResult.pageCount; i++) {
 				query.page = i;
 				queries.push(this.runQuery(projectId, query));
 			}
-			return Promise.all(queries)
-			.then((queryResults) => {
-				let testRuns = [];
-				for (var queryResult of queryResults) {
-					for (var item of queryResult.items) {
-						testRuns.push(new TestRun().fromJSON(item));
-					}
-				}
-				return testRuns;
-			});
+			return Promise.all(queries);
 		});
 	}
 
 	runQuery(projectId, query) {
 		let params = query.searchParams;
 		return this.driver.post(`/api/v3/projects/${projectId}/search${params}`, query.toJSON())
-		.then(function(response) {
+		.then((response) => {
 			return new QueryResult().fromJSON(response.data);
 		});
 	}
+
+
 
 
 }
