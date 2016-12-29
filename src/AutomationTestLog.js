@@ -48,6 +48,14 @@ export class AutomationTestLog extends QTestResource {
 		this._attachments = attachments;
 	}
 
+	get name() {
+		return this._name;
+	}
+
+	set name(name) {
+		this._name = name;
+	}
+
 	get note() {
 		return this._note;
 	}
@@ -62,6 +70,14 @@ export class AutomationTestLog extends QTestResource {
 
 	set testCaseVersionId(id) {
 		this._testCaseVersionId = id;
+	}
+
+	get testCaseId() {
+		return this._testCaseId;
+	}
+
+	set testCaseId(id) {
+		this._testCaseId = id;
 	}
 
 	get testStepLogs() {

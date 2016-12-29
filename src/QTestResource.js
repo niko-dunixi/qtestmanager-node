@@ -9,7 +9,11 @@ export class QTestResource {
 	}
 
 	get createURL() {
-		return this._createURL;
+		if (this._createURL) {
+			return this._createURL
+		} else {
+			throw new Error("URL for this resource is undefined. Are you sure you set all of the necessary properties?");
+		}
 	}
 
 	set createURL(url) {

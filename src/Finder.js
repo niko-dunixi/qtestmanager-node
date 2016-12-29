@@ -42,7 +42,9 @@ export class Finder extends Requester {
 			let testRuns = [];
 			for (var queryResult of queryResults) {
 				for (var item of queryResult.items) {
-					testRuns.push(new TestRun().fromJSON(item));
+					var testRun = new TestRun().fromJSON(item);
+					testRun.testCaseId = testRun.getLink("test-case").match(/test-cases\/(\d+)/)[1];
+					testRuns.push(testRun);
 				}
 			}
 			return testRuns;

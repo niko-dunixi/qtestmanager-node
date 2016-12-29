@@ -32,6 +32,22 @@ export class TestRun extends QTestResource {
 		this._properties = properties;
 	}
 
+	get testCaseId() {
+		return this.testCase.id;
+	}
+
+	set testCaseId(id) {
+		this.testCase.id = id;
+	}
+
+	get name() {
+		return this._name;
+	}
+
+	set name(name) {
+		this._name = name;
+	}
+
 	toJSON() {
 		let json = {
 			links: this.links,
