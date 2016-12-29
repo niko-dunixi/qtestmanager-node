@@ -1,5 +1,5 @@
-import { Finder } from './Finder';
 import { QTestResource } from './QTestResource';
+import { Finder } from '../services/Finder';
 
 export class TestRun extends QTestResource {
 

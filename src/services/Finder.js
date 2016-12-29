@@ -1,9 +1,9 @@
 import { Requester } from './Requester';
-import { TestCase } from './TestCase';
-import { AutomationTestLog } from './AutomationTestLog';
-import { Query } from './Query';
-import { QueryResult } from './QueryResult';
-import { TestRun } from './TestRun';
+import { TestCase } from '../models/TestCase';
+import { AutomationTestLog } from '../models/AutomationTestLog';
+import { Query } from '../models/Query';
+import { QueryResult } from '../models/QueryResult';
+import { TestRun } from '../models/TestRun';
 
 export class Finder extends Requester {
 

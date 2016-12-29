@@ -1,9 +1,8 @@
-export { TestRun } from './TestRun';
-export { AutomationTestLog } from './AutomationTestLog';
-export { Finder } from './Finder';
-export { Authenticator } from './Authenticator';
-export { Saver } from './Saver';
-export { TestCase } from './TestCase';
-export { FileUploader } from './FileUploader';
-	
+export { AutomationTestLog } from './models/AutomationTestLog';
+export { TestCase } from './models/TestCase';
+export { TestRun } from './models/TestRun';
+export { Authenticator } from './services/Authenticator';
+export { FileUploader } from './services/FileUploader';
+export { Finder } from './services/Finder';
+export { Saver } from './services/Saver';
 

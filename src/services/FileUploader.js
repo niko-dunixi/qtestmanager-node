@@ -1,5 +1,5 @@
+import { AutomationTestLog } from '../models/AutomationTestLog';
 import { Finder } from './Finder';
-import { AutomationTestLog } from './AutomationTestLog';
 import { Saver } from './Saver';
 
 var xml2js = require('xml2js');

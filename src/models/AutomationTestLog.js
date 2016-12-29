@@ -1,6 +1,6 @@
-import { TestRun } from './TestRun';
-import { Finder } from './Finder';
 import { QTestResource } from './QTestResource';
+import { TestRun } from './TestRun';
+import { Finder } from '../services/Finder';
 
 export class AutomationTestLog extends QTestResource {
 
