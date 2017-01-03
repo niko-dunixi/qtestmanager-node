@@ -1,6 +1,6 @@
 # Site title and subtitle. This is used in _includes/header.html
-title: 'jekyll-docs-template'
-subtitle: 'Painless documentation for your projects'
+3title: 'qtestmanager-node docs'
+subtitle: "A library to simplify the consumption of QA Symphony's qTest Manager API"
 
 # if you wish to integrate disqus on pages set your shortname here
 disqus_shortname: ''
@@ -15,7 +15,7 @@ google_analytics_id: ''
 navigation: 2
 
 # URL to source code, used in _includes/footer.html
-codeurl: 'https://github.com/bruth/jekyll-docs-template'
+codeurl: 'https://github.com/cpyle0819/qtestmanager-node'
 
 # Default categories (in order) to appear in the navigation
 sections: [
