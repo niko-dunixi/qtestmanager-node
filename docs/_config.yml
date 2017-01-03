@@ -2,6 +2,6 @@ theme: jekyll-theme-architect
 title: qtestmanager-node
 description: A library to simplify the consumption of QA Symphony's qTest Manager API
 collections:
-- api_documentation
+- documentation_models
 
 
