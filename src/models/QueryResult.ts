@@ -11,16 +11,17 @@ export class QueryResult {
     constructor(json: any) {
         this.links = json.links;
         this.page = json.page;
-        this.pageSize = json.pageSize;
+        this.pageSize = json.page_size;
         this.total = json.total;
         this.items = json.items;
     }
 
-	get pageCount() {
+    pageCount() {
 		return QueryResult.numPages(this.total, this.pageSize);
 	}
 
 	private static numPages(t,s) {
-	  return t<s?1:(Math.floor(t/s)+(t%s==0?0:1));
+        let result = t<s?1:(Math.floor(t/s)+(t%s==0?0:1));
+	  return result;
 	}
 }

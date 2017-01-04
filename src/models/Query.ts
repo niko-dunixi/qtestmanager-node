@@ -12,7 +12,7 @@ export class Query {
 
 	get searchParams() {
 	    let pageSize = this.pageSize ? `pageSize=${this.pageSize}` : "";
-	    let page = this.page ? `page="${this.page}` : "";
+	    let page = this.page ? `page=${this.page}` : "";
 		return `?${pageSize}&${page}`;
     }
 

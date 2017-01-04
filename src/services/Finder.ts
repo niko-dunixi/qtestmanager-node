@@ -55,7 +55,7 @@ export class Finder extends Requester {
 		return this.runQuery(projectId, query)
 		.then((queryResult) => {
 			let queries = [queryResult];
-			for (var i = 2; i <= queryResult.pageCount; i++) {
+			for (var i = 2; i <= queryResult.pageCount(); i++) {
 				query.page = i;
 				queries.push(this.runQuery(projectId, query));
 			}
