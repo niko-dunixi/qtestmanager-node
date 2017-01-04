@@ -6,6 +6,14 @@ A library to simplify the consumption of QA Symphony's qTest Manager API
 `npm install --save qtestmanager-node`
 
 ## Updates
+### 1.0.2
+When uploading xml results, the default test case name matcher regex
+can now be updated.
+```javascript
+let fileUploader = new FileUploader(host,token);
+fileUploader.testNameRegex = regex;
+```
+
 ### 1.0.1
 Convert src code to TypeScript
 

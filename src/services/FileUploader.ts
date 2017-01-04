@@ -10,6 +10,7 @@ export class FileUploader {
     projectId: number;
     moduleId: number;
     moduleType: string;
+    testNameRegex: RegExp;
     private uploadNew: boolean;
 
 	constructor(host, token) {
@@ -27,7 +28,7 @@ export class FileUploader {
 	uploadJUnitResults(xml) {
 		return this.parseXML(xml).then((json) => {
 			return this.finder.findTestRunsInModule(this.projectId, this.moduleId, this.moduleType).then((testRuns) => {
-				let jUnitTestCases = FileUploader.getJUnitTestCases(json);
+				let jUnitTestCases = this.getJUnitTestCases(json);
 				let promises = [];
 				for (let testCase of jUnitTestCases) {
 					for (let testRun of testRuns) {
@@ -63,14 +64,17 @@ export class FileUploader {
 		});
 	}
 
-	static getJUnitTestCases(json) {
+    getJUnitTestCases(json) {
 		let testCases = [];
 		let suites = json.testsuites.testsuite;
 		for (let suite of suites) {
 			for (let testCase of suite.testcase) {
-                let id = testCase.$.name.match(/#(\d+)/)[1];
-                let status = testCase.failure == true ? "FAIL" : "PASS";
-				testCases.push(new JUnitTestCase(id, status));
+                let regex = this.testNameRegex || /#(\d+)/;
+                let idMatch = testCase.$.name.match(regex);
+                if (idMatch) {
+                    let status = testCase.failure == true ? "FAIL" : "PASS";
+                    testCases.push(new JUnitTestCase(idMatch[1], status));
+                }
 			}
 		}
 		return testCases;
