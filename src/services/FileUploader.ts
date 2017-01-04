@@ -72,7 +72,7 @@ export class FileUploader {
                 let regex = this.testNameRegex || /#(\d+)/;
                 let idMatch = testCase.$.name.match(regex);
                 if (idMatch) {
-                    let status = testCase.failure == true ? "FAIL" : "PASS";
+                    let status = "failure" in testCase ? "FAIL" : "PASS";
                     testCases.push(new JUnitTestCase(idMatch[1], status));
                 }
 			}

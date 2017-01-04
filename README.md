@@ -6,6 +6,9 @@ A library to simplify the consumption of QA Symphony's qTest Manager API
 `npm install --save qtestmanager-node`
 
 ## Updates
+### 1.0.4
+Fix how the junit failure/pass was being read
+
 ### 1.0.3
 Fix small bug that occured when multiple pages were returned from search
 
