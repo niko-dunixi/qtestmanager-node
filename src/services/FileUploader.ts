@@ -5,13 +5,13 @@ import { JUnitTestCase } from "../models/test_result_models/JUnitTestCase";
 import * as xml2js from "xml2js";
 
 export class FileUploader {
-    finder: Finder;
-    saver: Saver;
-    projectId: number;
-    moduleId: number;
-    moduleType: string;
-    testNameRegex: RegExp;
-    private uploadNew: boolean;
+	finder: Finder;
+	saver: Saver;
+	projectId: number;
+	moduleId: number;
+	moduleType: string;
+	testNameRegex: RegExp;
+	private uploadNew: boolean;
 
 	constructor(host, token) {
 		this.finder = new Finder(host, token);
@@ -39,19 +39,20 @@ export class FileUploader {
 							log.executionEndDate = new Date().toISOString();
 							log.name = "QTM.FileUploader";
 							log.automationContent = "QTM.FileUploader";
+							log.note = "Uploaded with qtestmanager-node";
 							log.projectId = this.projectId;
 							log.testRunId = testRun.id;
 							promises.push(this.saver.saveNew(log));
 						}
 					}
 				}
-				return Promise.all(promises);		
+				return Promise.all(promises);
 			});
 		})
 	}
 
 	parseXML(xml) {
-        let parser = new xml2js.Parser();
+		let parser = new xml2js.Parser();
 		return new Promise(function(resolve, reject) {
 			parser.parseString(xml, function(err, json) {
 				if (err) {
@@ -64,23 +65,19 @@ export class FileUploader {
 		});
 	}
 
-    getJUnitTestCases(json) {
+	getJUnitTestCases(json) {
 		let testCases = [];
 		let suites = json.testsuites.testsuite;
 		for (let suite of suites) {
 			for (let testCase of suite.testcase) {
-                let regex = this.testNameRegex || /#(\d+)/;
-                let idMatch = testCase.$.name.match(regex);
-                if (idMatch) {
-                    let status = "failure" in testCase ? "FAIL" : "PASS";
-                    testCases.push(new JUnitTestCase(idMatch[1], status));
-                }
+				let regex = this.testNameRegex || /#(\d+)/;
+				let idMatch = testCase.$.name.match(regex);
+				if (idMatch) {
+					let status = "failure" in testCase ? "FAIL" : "PASS";
+					testCases.push(new JUnitTestCase(idMatch[1], status));
+				}
 			}
 		}
 		return testCases;
 	}
 }
-
-
-
-
