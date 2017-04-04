@@ -6,26 +6,14 @@ A library to simplify the consumption of QA Symphony's qTest Manager API
 `npm install --save qtestmanager-node`
 
 ## Updates
+### 1.0.5
+Add a note to files uploaded with the XML uploader
+
 ### 1.0.4
 Fix how the junit failure/pass was being read
 
 ### 1.0.3
 Fix small bug that occured when multiple pages were returned from search
-
-### 1.0.2
-When uploading xml results, the default test case name matcher regex
-can now be updated.
-```javascript
-let fileUploader = new FileUploader(host,token);
-fileUploader.testNameRegex = regex;
-```
-
-### 1.0.1
-Convert src code to TypeScript
-
-### 1.0.0
-Initial release
-
 
 ## Usage
 `qtestmanager-node` offers a variety of ways to integrate with qTest Manager. 
@@ -60,6 +48,9 @@ uploader.moduleType = "Test Cycle"
 
 // Id of the module to which you are uploading
 uploader.moduleId = 67890;
+
+// Optional. Set the regex that parses out the test id
+uploader.testNameRegex = regex;
 
 // Upload results
 uploader.uploadJUnitResults(xml).then((responses) => {
