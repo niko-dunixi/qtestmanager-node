@@ -8,12 +8,12 @@ export class AutomationTestLog extends QTestResource {
 	executionEndDate: string;
 	automationContent: string;
 	attachments: Attachment[];
-    note: string;
-    testCaseVersionId: number;
-    testCaseId: number;
-    testStepLogs: StepLog[];
-    private _testRunId: number;
-    private _projectId: number;
+	note: string;
+	testCaseVersionId: number;
+	testCaseId: number;
+	testStepLogs: StepLog[];
+	private _testRunId: number;
+	private _projectId: number;
 
 	constructor() {
 		super();
